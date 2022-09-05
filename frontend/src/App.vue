@@ -7,5 +7,9 @@ import { RouterLink, RouterView } from 'vue-router'
   <RouterView />
 </template>
 
-<style scoped>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+#app {
+  font-family: 'Roboto', sans-serif;
+}
 </style>

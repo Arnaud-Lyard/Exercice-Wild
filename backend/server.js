@@ -15,9 +15,9 @@ app.listen(HTTP_PORT, () => {
     console.log(`Server running on port ${HTTP_PORT}`)
 });
 
-// Get all todos
-app.get("/api/todos", (req, res) => {
-    var sql = "select * from todos"
+// Get all names
+app.get("/api/names", (req, res) => {
+    var sql = "select * from names"
     var params = []
     db.all(sql, params, (err, rows) => {
         if (err) {
@@ -28,39 +28,19 @@ app.get("/api/todos", (req, res) => {
       });
 });
 
-// Get a single todo
-app.get("/api/todos/:id", (req, res) => {
-    var sql = "select * from todos where id = ?"
-    var params = [req.params.id]
-    db.get(sql, params, (err, row) => {
-        if (err) {
-          res.status(400).json({"error":err.message});
-          return;
-        }
-        res.status(200).json(row)
-      });
-});
+// Create a name
+app.post("/api/names/", (req, res) => {
+    var errors="Veuillez spécifier un nom";
 
-// Create a todo
-app.post("/api/todos/", (req, res) => {
-    var errors=[]
-
-    if (!req.body.title){
-        errors.push("Veuillez spécifier un titre");
-    }
-    if (!req.body.content){
-        errors.push("Veuillez insérer du contenu");
-    }
-    if (errors.length){
-        res.status(400).json({"error":errors.join(",")});
+    if (!req.body.name){
+        res.status(400).json({"error":errors});
         return;
     }
     var data = {
-        title: req.body.title,
-        content: req.body.content,
+        name: req.body.name,
     }
-    var sql ='INSERT INTO todos (title, content) VALUES (?,?)'
-    var params =[data.title, data.content]
+    var sql ='INSERT INTO names (name) VALUES (?)'
+    var params = data.name
     db.run(sql, params, (err, result) => {
         if (err){
             res.status(400).json({"error": err.message})
